@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Books.ru-Интернет-магазин</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/icon.png">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/templatemo.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
+    <link rel="stylesheet" href="css/fontawesome.min.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light shadow">
+        <div class="container d-flex justify-content-between align-items-center">
+
+            <a class="navbar-brand text-success logo h1 align-self-center" href="/main">
+                Books.ru
+            </a>
+
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#templatemo_main_nav" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="align-self-center collapse navbar-collapse flex-fill  d-lg-flex justify-content-lg-between" id="templatemo_main_nav">
+                <div class="flex-fill">
+                    <ul class="nav navbar-nav d-flex justify-content-between mx-lg-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/main">Главная</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/index">Интернет-магазин</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/contact">Контакты</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="navbar align-self-center d-flex">
+                    <div class="d-lg-none flex-sm-fill mt-3 mb-4 col-7 col-sm-auto pr-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="inputMobileSearch" placeholder="Search ...">
+                            <div class="input-group-text">
+                                <i class="fa fa-fw fa-search"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <a class="nav-icon position-relative text-decoration-none" href="/cart">
+                        <i class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i>
+                    </a>
+                    <a class="nav-icon position-relative text-decoration-none" href="/lk">
+                        <i class="fa fa-fw fa-user text-dark mr-3"></i>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </nav>
+   
+    <!-- Start Content -->
+    <div class="container py-5">
+        <div class="row">
+
+           <div class="col-lg-3">
+                <h1 class="h2 pb-4">Фильтры</h1>
+                <form th:method="POST" th:action="@{/search}">
+                    <fieldset>
+                        <label for="search">Поиск по наименованию</label>
+                        <input type="search" name="search"  th:value="*{value_search}" id="search">
+                        <br>
+                        <br>
+                        <br>
+                        <p>Цена, ₽</p>
+                        <label for="ot">От</label>
+                        <input type="text" name="ot"  th:value="*{value_price_ot}" id="ot">
+                        <br>
+                        <br>
+                        <label for="do">До</label>
+                        <input type="text" name="do"  th:value="*{value_price_do}" id="do">
+                        <br>
+                        <br>
+                        <p>Сортировка</p>
+                        <input type="radio" id="ascending_price" name="price" value="sorted_by_ascending_price">
+                        <label for="ascending_price">по возрастанию цены</label>
+                        <br>
+                        <input type="radio" id="descending_price" name="price" value="sorted_by_descending_price">
+                        <label for="descending_price">по убыванию цены</label>
+                        <br>
+                        <input type="submit" value="Найти">
+                    </fieldset>
+                </form>
+            </div>
+
+            <div class="col-lg-9">
+                <div class="row">
+                    <div class="col-md-6 pb-4">
+
+                    </div>
+                </div>
+                <div class="row">
+
+
+                    <div class="col-md-4" th:each="product : ${products}">
+                        <div class="card mb-4 product-wap rounded-0" align-item="stretch">
+                            <div class="card rounded-0">
+                                <img class="card-img rounded-0 img-fluid" th:src="'uploads/' + ${product.imageList[0].getFileName()}" th:href="@{/product/info/{id}(id=${product.getId()})}">
+                            </div>
+                            <div class="card-body">
+                                <a th:href="@{/product/info/{id}(id=${product.getId()})}" th:text="${product.getTitle()}" class="h3 text-decoration-none"></a>
+                                <p class="text-center mb-0" th:text="'Цена: ' + ${product.getPrice()}"></p>
+                                <a th:href="@{/cart/add/{id}(id=${product.getId()})}">Добавить в корзину</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <footer class="bg-dark" id="tempaltemo_footer">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-md-4 pt-5">
+                    <h2 class="h2 text-success border-bottom pb-3 border-light logo">Books.ru</h2>
+                    <ul class="list-unstyled text-light footer-link-list">
+                        <li>
+                            <i class="fas fa-map-marker-alt fa-fw"></i>
+                            Стремянный пер., 36, Москва
+                        </li>
+                        <li>
+                            <i class="fa fa-phone fa-fw"></i>
+                            <a class="text-decoration-none" href="tel:8 (800) 200-XX-XX">8 (800) 200-XX-XX
+                        </a>
+                        </li>
+                        <li>
+                            <i class="fa fa-envelope fa-fw"></i>
+                            <a class="text-decoration-none" href="mailto:books@company.ru">books@company.ru</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row text-light mb-4">
+                <div class="col-12 mb-3">
+                    <div class="w-100 my-3 border-top border-light"></div>
+                </div>
+                <div class="col-auto me-auto">
+                    <ul class="list-inline text-left footer-icons">
+                        <li class="list-inline-item border border-light rounded-circle text-center">
+                            <a class="text-light text-decoration-none" target="_blank" href="http://telegram.org/"><i class="fab fa-telegram fa-lg fa-fw"></i></a>
+                        </li>
+                        <li class="list-inline-item border border-light rounded-circle text-center">
+                            <a class="text-light text-decoration-none" target="_blank" href="https://vk.com/"><i class="fab fa-vk fa-lg fa-fw"></i></a>
+                        </li>
+                        <li class="list-inline-item border border-light rounded-circle text-center">
+                            <a class="text-light text-decoration-none" target="_blank" href="https://www.ok.ru/"><i class="fab fa-odnoklassniki fa-lg fa-fw"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-100 bg-black py-3">
+            <div class="container">
+                <div class="row pt-2">
+                    <div class="col-12">
+                        <p class="text-left text-light">
+                            Copyright &copy; 2022 Books.ru 
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </footer>
+    <script src="js/jquery-1.11.0.min.js"></script>
+    <script src="js/jquery-migrate-1.2.1.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/templatemo.js"></script>
+</body>
+</html>

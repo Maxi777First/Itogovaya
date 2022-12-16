@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Админ панель</title>
+</head>
+<body>
+<h3>Личный кабинет администратора</h3>
+<form th:method="POST" th:action="@{/logout}">
+    <input type="submit" value="Выйти из личного кабинета">
+</form>
+<h3>Заказы: </h3>
+<hr>
+<form th:method="POST" th:action="@{/admin/searchorder}">
+    <fieldset>
+        <label for="search">Поиск по номеру заказа</label>
+        <input type="search" name="search"  th:value="*{value_search}" id="search">
+        <input type="submit" value="Найти">
+    </fieldset>
+</form>
+<div th:each="order : ${orders}">
+    <h3 th:text="'Заказ № ' + ${order.getNumber()}"></h3>
+    <img th:src="'/uploads/' + ${order.getProduct().imageList[0].getFileName()}" width="300px">
+    <p th:text="'Наименование: ' + ${order.getProduct().getTitle()}"></p>
+    <p th:text="'Количество: ' + ${order.getCount()}"></p>
+    <p th:text="'Цена: ' + ${order.getPrice()}"></p>
+    <p th:text="'Дата заказа: ' + ${#temporals.format(order.getDateTime(), 'dd-MMM-yyyy')}"></p>
+    <p th:text="'Статус: ' + ${order.getStatus()}"></p>
+    <form th:method="POST" th:action="@{/admin/orders/edit/{id}(id=${order.getId()})}" th:object="${order}">
+        <fieldset>
+    <p>Изменить статус</p>
+    <input type="radio" id="1" name="status" value="1">
+    <label for="1">Принят</label>
+    <input type="radio" id="2" name="status" value="2">
+    <label for="2">Оформлен</label>
+    <input type="radio" id="3" name="status" value="3">
+    <label for="3">Ожидает</label>
+    <input type="radio" id="4" name="status" value="4">
+    <label for="4">Получен</label>
+    <input type="radio" id="5" name="status" value="5">
+    <label for="5">Отменен</label>
+    <input type="submit" value="Изменить">
+            </fieldset>
+    </form>
+    <hr>
+</div>
+</body>
+</html>
